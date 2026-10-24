@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Techrution Institute – Student Management</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--ink:#12151c;--mute:#5d6778;--line:#e1e6ef;--brand:#16181d;--acc:#0b63d8;--accs:#e3eeff;--red:#b42318;--redb:#fde8e6;--grn:#14693a;--grnb:#dff4e6;--amb:#8a5a00;--ambb:#fdf0d5;--hero:#16181d;--side:#101216;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0d12;--card:#14171e;--ink:#e8ecf3;--mute:#8d97a8;--line:#232833;--brand:#e8ecf3;--acc:#2f74e6;--accs:#14253f;--red:#ff9b90;--redb:#3b1a17;--grn:#7ee0a3;--grnb:#12301f;--amb:#f5c76a;--ambb:#3a2b0a;--hero:#171b24;--side:#07080b}}
+:root[data-theme="dark"]{--bg:#0b0d12;--card:#14171e;--ink:#e8ecf3;--mute:#8d97a8;--line:#232833;--brand:#e8ecf3;--acc:#2f74e6;--accs:#14253f;--red:#ff9b90;--redb:#3b1a17;--grn:#7ee0a3;--grnb:#12301f;--amb:#f5c76a;--ambb:#3a2b0a;--hero:#171b24;--side:#07080b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.side{position:fixed;top:0;left:0;bottom:0;width:250px;background:var(--side);color:#fff;z-index:30;display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top,0px)) 14px 18px;transition:transform .2s}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;line-height:1.25}
+.side .brand{padding:0 6px 18px;border-bottom:1px solid rgba(255,255,255,.14);margin-bottom:14px}
+.brand img{width:42px;height:42px;flex:none;border-radius:10px;background:#fff;padding:2px}
+.dc{display:inline-flex;gap:5px;align-items:center;margin:0 12px 6px 0;color:var(--ink)}.dc input{width:auto}
+.sched{margin:10px 0 8px;font-size:13px;color:var(--mute)}
+nav{display:flex;flex-direction:column;gap:4px}
+nav button{border:0;background:none;color:rgba(255,255,255,.75);font:inherit;font-weight:600;padding:11px 14px;border-radius:10px;cursor:pointer;text-align:left}
+nav button:hover{background:rgba(255,255,255,.08)}
+nav button.on{background:var(--acc);color:#fff}
+.wrap{margin-left:250px}
+.mtop,.scrim{display:none}
+.mtop button{border:0;background:none;color:var(--ink);font-size:24px;line-height:1;cursor:pointer;padding:4px 8px}
+main{max-width:1040px;margin:auto;padding:22px 20px 60px}
+@media(max-width:860px){.side{transform:translateX(-100%)}.side.open{transform:none}.side.open+.scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:25}.wrap{margin-left:0}.mtop{display:flex;align-items:center;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--card);border-bottom:1px solid var(--line);padding:8px 12px}main{padding:16px 14px 60px}}
+.hero{background:var(--hero);color:#fff;border-radius:18px;padding:28px 22px;margin-bottom:18px}
+.hero h1{margin:0 0 4px;font-size:clamp(22px,4vw,32px);font-weight:700;letter-spacing:-.01em}
+.hero p{margin:0 0 16px;opacity:.75}
+.hero input{width:100%;padding:14px 16px;border-radius:12px;border:0;font:inherit;background:#fff;color:#14213d}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.stat span{color:var(--mute);font-size:13px}.stat b{display:block;font-size:22px;margin-top:2px}
+h2{font-size:17px;margin:20px 0 10px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.top h2{margin:0}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:600;padding:9px 14px;border-radius:10px;cursor:pointer}
+.btn.p{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.d{color:var(--red)}.btn.s{padding:5px 10px;font-size:13px}
+.btn:focus-visible,input:focus-visible,select:focus-visible,nav button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:center;cursor:pointer}
+.item:hover{border-color:var(--acc)}
+.av{width:40px;height:40px;border-radius:50%;background:var(--accs);color:var(--acc);display:grid;place-items:center;font-weight:700;flex:none}
+.grow{flex:1;min-width:0}.grow b{display:block}
+small,.mute{color:var(--mute);font-size:13px}small{display:block}
+.right{text-align:right;flex:none}
+.tag,.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600}
+.tag{background:var(--accs);color:var(--acc)}
+.Completed{background:var(--grnb);color:var(--grn)}.Partial{background:var(--ambb);color:var(--amb)}.Pending{background:var(--redb);color:var(--red)}
+.fig{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-top:10px;width:100%}
+.fig div{background:var(--bg);border-radius:8px;padding:8px 10px}.fig span{font-size:12px;color:var(--mute);display:block}.fig b{font-size:14px}
+.fee{flex-wrap:wrap;cursor:default}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 14px;border-radius:99px;font:inherit;cursor:pointer}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:var(--card);color:var(--ink)}
+.search{margin-bottom:12px}
+label{font-size:13px;color:var(--mute);display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid2 .w{grid-column:1/-1}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.empty{text-align:center;color:var(--mute);padding:28px 10px;border:1px dashed var(--line);border-radius:12px}
+.ov{position:fixed;inset:0;background:rgba(10,18,32,.55);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.md{background:var(--card);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:20px}
+@media(min-width:600px){.ov{align-items:center;padding:16px}.md{border-radius:18px}}
+.md h3{margin:0 0 14px}.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.pay{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--brand);color:var(--card);padding:10px 18px;border-radius:10px;z-index:99;display:none}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}.hero{padding:22px 16px}.item{align-items:flex-start}}
+.lock{position:fixed;inset:0;background:#101216;z-index:200;display:grid;place-items:center;padding:20px}.lock form{background:var(--card);padding:28px 24px;border-radius:18px;width:100%;max-width:340px;text-align:center}.lock img{width:64px;height:64px;border-radius:14px;margin-bottom:8px}.lock h2{margin:0 0 4px}.lock input{margin:12px 0 6px;text-align:center;font-size:18px;letter-spacing:.3em}.lock p{min-height:22px;margin:0 0 8px;color:var(--red)}
+</style>
+</head>
+<body>
+<aside class="side" id="side"><div class="brand" id="brand"></div><nav id="nav"></nav></aside><div class="scrim" onclick="$('side').classList.remove('open')"></div>
+<div class="wrap"><div class="mtop"><button onclick="$('side').classList.toggle('open')" aria-label="Menu">☰</button><div class="brand" id="mbrand"></div></div>
+<main id="main"></main></div>
+<div id="modal"></div><div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ====== SUPABASE SETTINGS: paste your own values here ====== */
+const SUPABASE_URL='https://ihujjofciivzrwosibbs.supabase.co';
+const SUPABASE_KEY='sb_publishable_Gn5rmCYzyuSFI0oyawZZmQ_yEeZPSgL';
+const ADMIN_EMAIL='admin@gmail.com';
+const pwOf=p=>'techrution-'+p;
+/* ============================================================ */
+let DB={courses:[],students:[]};let sb=null,synced={},csync={},ready=false,seeded=false;
+const CL=[['UI/UX Designing',4],['Backend Development',3],['Graphic + Video Editing',6],['FBA Wholesale',3],['Social Media Marketing',3],['WordPress Development',3],['SEO + Blogging',4],['Full Stack Development',6],['Shopify',3],['Local Ecommerce',4],['Graphic Designing',3],['Basic Computer',1.5],['Digital Marketing',1.5],['Video Editing',3],['AI for Beginners',3],['Digital Marketing (Advanced)',6],['Python',4],['AI Automation (N8N, AI Agents)',5],['Front End Development',3],['Etsy',2],['eBay',2],['Artificial Intelligence',3],['AI Content Monetization',3],['Etsy Digital',2]];
+const mk=()=>CL.map((c,i)=>({id:'k'+i,name:c[0],duration:c[1]+' Months',fee:0,days:'',start:'',end:''}));
+const cRow=c=>({id:c.id,name:c.name,duration:c.duration||'',fee:c.fee||0,days:c.days||'',start_time:c.start||'',end_time:c.end||''});
+const cFrom=r=>({id:r.id,name:r.name,duration:r.duration||'',fee:Number(r.fee||0),days:r.days||'',start:r.start_time||'',end:r.end_time||''});
+let q=Promise.resolve();
+function save(){q=q.then(syncAll).catch(e=>{console.error(e);toast('Could not save. Check your internet.','error')})}
+async function syncAll(){
+const cids=new Set(DB.courses.map(c=>c.id)),up=DB.courses.filter(c=>csync[c.id]!==JSON.stringify(c));
+if(up.length){const r=await sb.from('courses').upsert(up.map(cRow));if(r.error)throw r.error;up.forEach(c=>csync[c.id]=JSON.stringify(c))}
+const ids=new Set(DB.students.map(s=>s.id));
+for(const s of DB.students){const j=JSON.stringify(s);if(synced[s.id]===j)continue;
+let r=await sb.from('students').upsert({id:s.id,name:s.name,father:s.father,phone:s.phone,mode:s.mode,course_id:s.courseId,total:s.total,notes:s.notes||'',joined:s.joined||null});if(r.error)throw r.error;
+if(s.payments.length){r=await sb.from('payments').upsert(s.payments.map(p=>({id:p.id,student_id:s.id,amount:p.amount,date:p.date,kind:p.kind,note:p.note||''})));if(r.error)throw r.error}
+const now=new Set(s.payments.map(p=>p.id)),gone=(synced[s.id]?JSON.parse(synced[s.id]).payments:[]).map(p=>p.id).filter(i=>!now.has(i));
+if(gone.length){r=await sb.from('payments').delete().in('id',gone);if(r.error)throw r.error}
+synced[s.id]=j}
+for(const id of Object.keys(synced))if(!ids.has(id)){const r=await sb.from('students').delete().eq('id',id);if(r.error)throw r.error;delete synced[id]}
+for(const id of Object.keys(csync))if(!cids.has(id)){const r=await sb.from('courses').delete().eq('id',id);if(r.error)throw r.error;delete csync[id]}}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>'Rs. '+Number(n||0).toLocaleString('en-PK');
+const today=()=>new Date().toISOString().slice(0,10);
+const fdate=d=>d?new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'–';
+const uid=p=>p+Math.random().toString(36).slice(2,9);
+const cname=id=>(DB.courses.find(c=>c.id===id)||{}).name||'–';
+function calc(s){const paid=s.payments.reduce((a,p)=>a+p.amount,0),adv=s.payments.filter(p=>p.kind==='Advance').reduce((a,p)=>a+p.amount,0),rem=Math.max(s.total-paid,0);
+const last=s.payments.map(p=>p.date).sort().pop()||'';
+return{paid,adv,rem,last,st:s.total>0&&rem===0?'Completed':paid>0?'Partial':'Pending'}}
+function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2600)}
+function modal(h){$('modal').innerHTML=`<div class="ov" onclick="if(event.target===this)closeM()"><div class="md">${h}</div></div>`}
+function closeM(){$('modal').innerHTML=''}
+const V={view:'home',mode:'',tab:'Pending',q:''};
+const LOGO='<svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#10b981"/><path d="M24 11 7 20l17 9 17-9z" fill="#fff"/><path d="M14 25v7c0 3 5 6 10 6s10-3 10-6v-7l-10 5z" fill="#fff" opacity=".85"/><path d="M41 21v10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>';
+const NAVS=[['home','Home'],['students','Students'],['fees','Fees'],['courses','Courses']];
+function go(v){V.view=v;V.q='';V.mode='';render()}
+function match(s,q){q=q.toLowerCase().trim();return !q||(s.name+' '+s.father+' '+s.phone).toLowerCase().includes(q)}
+function item(s){const c=calc(s);
+return `<div class="item" onclick="detail('${s.id}')"><div class="av">${esc((s.name[0]||'?').toUpperCase())}</div>
+<div class="grow"><b>${esc(s.name)}</b><small>Father: ${esc(s.father)} • ${esc(s.phone)}</small><small>${esc(cname(s.courseId))} • ${s.mode}</small></div>
+<div class="right"><span class="badge ${c.st}">${c.st}</span><small>Remaining ${money(c.rem)}</small></div></div>`}
+const list=(arr,msg)=>arr.length?arr.map(item).join(''):`<div class="empty">${msg}</div>`;
+
+/* ---------- HOME ---------- */
+function home(){const st=DB.students,ph=st.filter(s=>s.mode==='Physical').length;
+let paid=0,tot=0;st.forEach(s=>{tot+=s.total;paid+=calc(s).paid});
+const cards=[['Total Students',st.length],['Physical Classes',ph],['Online Classes',st.length-ph],['Fee Collected',money(paid)],['Fee Pending',money(tot-paid)]];
+return `<section class="hero"><h1>${esc(DB.inst||'Techrution Institute of Technology')}</h1><p>Search any student by name, father’s name or phone.</p>
+<input id="hs" type="search" placeholder="Type a student name…" oninput="homeSearch(this.value)" autocomplete="off"></section>
+<div class="stats">${cards.map(c=>`<div class="stat"><span>${c[0]}</span><b>${c[1]}</b></div>`).join('')}</div>
+<div class="top"><h2 id="rt">Recent students</h2><button class="btn p" onclick="studentForm()">+ Add student</button></div>
+<div id="res">${list(st.slice(-5).reverse(),'No students yet. Add your first student to get started.')}</div>`}
+function homeSearch(v){const q=v.trim();$('rt').textContent=q?'Search results':'Recent students';
+$('res').innerHTML=q?list(DB.students.filter(s=>match(s,q)),'No student found with this name.'):list(DB.students.slice(-5).reverse(),'No students yet.')}
+
+/* ---------- STUDENTS ---------- */
+function students(){return `<div class="top"><h2>Students (${DB.students.length})</h2><button class="btn p" onclick="studentForm()">+ Add student</button></div>
+<input class="search" type="search" placeholder="Search by name, father or phone…" oninput="V.q=this.value;stList()" value="${esc(V.q)}">
+<div class="chips">${['','Physical','Online'].map(m=>`<button class="chip ${V.mode===m?'on':''}" onclick="V.mode='${m}';render()">${m||'All'}</button>`).join('')}</div>
+<div id="sl"></div>`}
+function stList(){$('sl').innerHTML=list(DB.students.filter(s=>match(s,V.q)&&(!V.mode||s.mode===V.mode)),'No students found.')}
+
+/* ---------- ADD / EDIT STUDENT ---------- */
+function studentForm(id){const s=id?DB.students.find(x=>x.id===id):null;
+const c0=DB.courses[0];
+if(!DB.courses.length){toast('Add a course first');go('courses');return}
+modal(`<h3>${s?'Edit student':'Add student'}</h3><form onsubmit="return saveStudent(event,'${id||''}')"><div class="grid2">
+<div><label>Student name *</label><input required name="name" value="${esc(s?.name)}"></div>
+<div><label>Father’s name *</label><input required name="father" value="${esc(s?.father)}"></div>
+<div><label>Phone number *</label><input required name="phone" inputmode="tel" value="${esc(s?.phone)}" placeholder="0300-1234567"></div>
+<div><label>Class type *</label><select name="mode"><option ${s?.mode==='Physical'?'selected':''}>Physical</option><option ${s?.mode==='Online'?'selected':''}>Online</option></select></div>
+<div><label>Course *</label><select name="courseId" id="cs" onchange="if(!${!!s}){const c=DB.courses.find(c=>c.id===this.value);$('tf').value=c?c.fee:0}">${DB.courses.map(c=>`<option value="${c.id}" ${s&&s.courseId===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
+<div><label>Total fee (Rs.) *</label><input required type="number" min="0" name="total" id="tf" value="${s?s.total:c0.fee}"></div>
+${s?'':`<div><label>Advance paid (Rs.)</label><input type="number" min="0" name="adv" value="0"></div>
+<div><label>Payment date</label><input type="date" name="advDate" value="${today()}"></div>`}
+<div class="w"><label>Notes</label><input name="notes" value="${esc(s?.notes)}"></div></div>
+<div class="acts"><button type="button" class="btn" onclick="closeM()">Cancel</button><button class="btn p">${s?'Save changes':'Add student'}</button></div></form>`)}
+function saveStudent(e,id){e.preventDefault();const f=new FormData(e.target),total=Number(f.get('total')||0);
+const d={name:f.get('name').trim(),father:f.get('father').trim(),phone:f.get('phone').trim(),mode:f.get('mode'),courseId:f.get('courseId'),total,notes:f.get('notes')};
+if(id){const s=DB.students.find(x=>x.id===id);if(total<calc(s).paid){toast('Total fee cannot be less than amount already paid');return false}Object.assign(s,d);toast('Student updated')}
+else{const adv=Number(f.get('adv')||0);if(adv>total){toast('Advance cannot be more than total fee');return false}
+d.id=uid('s');d.joined=today();d.payments=adv>0?[{id:uid('p'),amount:adv,date:f.get('advDate')||today(),note:'Advance',kind:'Advance'}]:[];DB.students.push(d);toast('Student added')}
+save();closeM();render();return false}
+function delStudent(id){confirmM('Delete this student and all fee records?',()=>{DB.students=DB.students.filter(s=>s.id!==id);save();closeM();render();toast('Student deleted')})}
+function confirmM(msg,yes){modal(`<h3>Please confirm</h3><p>${msg}</p><div class="acts"><button class="btn" onclick="closeM()">Cancel</button><button class="btn p" id="yes">Yes, delete</button></div>`);$('yes').onclick=yes}
+
+/* ---------- DETAIL ---------- */
+function detail(id){const s=DB.students.find(x=>x.id===id);if(!s)return;const c=calc(s);
+const pays=[...s.payments].sort((a,b)=>b.date.localeCompare(a.date));
+modal(`<h3>${esc(s.name)} <span class="badge ${c.st}">${c.st}</span></h3>
+<p class="mute" style="margin-top:-8px">Father: ${esc(s.father)} • ${esc(s.phone)}<br>${esc(cname(s.courseId))} • ${s.mode} classes<br>Timing: ${esc(sched(DB.courses.find(c=>c.id===s.courseId)||{}))}${s.notes?'<br>'+esc(s.notes):''}</p>
+<div class="fig"><div><span>Total fee</span><b>${money(s.total)}</b></div><div><span>Advance</span><b>${money(c.adv)}</b></div><div><span>Total paid</span><b>${money(c.paid)}</b></div><div><span>Remaining</span><b>${money(c.rem)}</b></div></div>
+<div class="top" style="margin-top:16px"><b>Payments</b>${c.rem>0?`<button class="btn s p" onclick="payForm('${s.id}')">+ Add payment</button>`:''}</div>
+${pays.length?pays.map(p=>`<div class="pay"><div><b>${money(p.amount)}</b> <span class="tag">${p.kind}</span><small>${fdate(p.date)}${p.note&&p.note!==p.kind?' • '+esc(p.note):''}</small></div>
+<div><button class="btn s" onclick="payForm('${s.id}','${p.id}')">Edit</button> <button class="btn s d" onclick="delPay('${s.id}','${p.id}')">✕</button></div></div>`).join(''):'<p class="mute">No payments recorded yet.</p>'}
+<div class="acts"><button class="btn d" onclick="delStudent('${s.id}')">Delete</button><button class="btn" onclick="studentForm('${s.id}')">Edit student</button><button class="btn" onclick="closeM()">Close</button></div>`)}
+
+/* ---------- PAYMENTS ---------- */
+function payForm(sid,pid){const s=DB.students.find(x=>x.id===sid),p=pid?s.payments.find(x=>x.id===pid):null,c=calc(s);
+const max=c.rem+(p?p.amount:0);
+modal(`<h3>${p?'Edit payment':'Add payment'} – ${esc(s.name)}</h3><p class="mute">Remaining before this payment: <b>${money(max)}</b></p>
+<form onsubmit="return savePay(event,'${sid}','${pid||''}')"><div class="grid2">
+<div><label>Amount (Rs.) *</label><input required type="number" min="1" max="${max}" name="amount" value="${p?p.amount:''}"></div>
+<div><label>Payment date *</label><input required type="date" name="date" value="${p?p.date:today()}"></div>
+<div><label>Type</label><select name="kind"><option ${p&&p.kind==='Advance'?'selected':''}>Advance</option><option ${!p||p.kind!=='Advance'?'selected':''}>Installment</option></select></div>
+<div><label>Note</label><input name="note" value="${p&&p.note!==p.kind?esc(p.note):''}"></div></div>
+<div class="acts"><button type="button" class="btn" onclick="detail('${sid}')">Back</button><button class="btn p">Save payment</button></div></form>`)}
+function savePay(e,sid,pid){e.preventDefault();const f=new FormData(e.target),s=DB.students.find(x=>x.id===sid),amt=Number(f.get('amount')),before=calc(s).st;
+const old=pid?s.payments.find(x=>x.id===pid):null;
+if(amt<=0||amt>calc(s).rem+(old?old.amount:0)){toast('Amount cannot exceed the remaining fee');return false}
+const d={amount:amt,date:f.get('date'),kind:f.get('kind'),note:f.get('note')||f.get('kind')};
+if(old)Object.assign(old,d);else s.payments.push({id:uid('p'),...d});
+save();const now=calc(s).st;toast(now==='Completed'&&before!=='Completed'?'Fee complete – moved to Completed':'Payment saved');
+render();detail(sid);return false}
+function delPay(sid,pid){const s=DB.students.find(x=>x.id===sid);s.payments=s.payments.filter(p=>p.id!==pid);save();toast('Payment removed');render();detail(sid)}
+
+/* ---------- FEES ---------- */
+function fees(){const done=DB.students.filter(s=>calc(s).st==='Completed'),pend=DB.students.filter(s=>calc(s).st!=='Completed');
+const arr=(V.tab==='Completed'?done:pend);
+return `<div class="top"><h2>Fees</h2></div>
+<div class="chips"><button class="chip ${V.tab==='Pending'?'on':''}" onclick="V.tab='Pending';render()">Pending (${pend.length})</button><button class="chip ${V.tab==='Completed'?'on':''}" onclick="V.tab='Completed';render()">Completed (${done.length})</button></div>
+<input class="search" type="search" placeholder="Search student name…" oninput="V.q=this.value;feeList()" value="${esc(V.q)}"><div id="fl"></div>`}
+function feeList(){const arr=DB.students.filter(s=>(calc(s).st==='Completed')===(V.tab==='Completed')&&match(s,V.q));
+$('fl').innerHTML=arr.length?arr.map(s=>{const c=calc(s);return `<div class="item fee"><div class="av">${esc((s.name[0]||'?').toUpperCase())}</div>
+<div class="grow"><b>${esc(s.name)}</b><small>${esc(cname(s.courseId))} • ${s.mode}</small></div><span class="badge ${c.st}">${c.st}</span>
+<div class="fig"><div><span>Total</span><b>${money(s.total)}</b></div><div><span>Advance</span><b>${money(c.adv)}</b></div><div><span>Paid</span><b>${money(c.paid)}</b></div><div><span>Remaining</span><b>${money(c.rem)}</b></div><div><span>Last payment</span><b>${fdate(c.last)}</b></div></div>
+<div style="width:100%;display:flex;gap:8px;justify-content:flex-end"><button class="btn s" onclick="detail('${s.id}')">History / Edit</button>${c.rem>0?`<button class="btn s p" onclick="payForm('${s.id}')">Pay</button>`:''}</div></div>`}).join(''):
+`<div class="empty">${V.tab==='Completed'?'No student has completed the fee yet.':'No pending fees. All clear.'}</div>`}
+
+/* ---------- COURSES ---------- */
+const t12=t=>{if(!t)return'';const[h,m]=t.split(':').map(Number);return(h%12||12)+':'+String(m).padStart(2,'0')+' '+(h<12?'AM':'PM')};
+function sched(c){const d=(c.days||'').split(',').filter(Boolean).join(', '),t=c.start?t12(c.start)+(c.end?' – '+t12(c.end):''):'';return d||t?[d,t].filter(Boolean).join(' • '):'Timing not set'}
+function courses(){return `<div class="top"><h2>Courses (${DB.courses.length})</h2><button class="btn p" onclick="courseForm()">+ Add course</button></div>
+<div class="cgrid">${DB.courses.map(c=>{const n=DB.students.filter(s=>s.courseId===c.id).length;return `<div class="card"><b>${esc(c.name)}</b>
+<div class="fig"><div><span>Duration</span><b>${esc(c.duration)||'–'}</b></div><div><span>Fee</span><b>${c.fee?money(c.fee):'Not set'}</b></div></div>
+<div class="sched">Timing: ${esc(sched(c))}</div><small>${n} student${n===1?'':'s'} enrolled</small>
+<div class="acts" style="justify-content:flex-start;margin-top:12px"><button class="btn s" onclick="courseForm('${c.id}')">Edit</button><button class="btn s d" onclick="delCourse('${c.id}')">Delete</button></div></div>`}).join('')}</div>`}
+function courseForm(id){const c=id?DB.courses.find(x=>x.id===id):{name:'',duration:'',fee:''};
+modal(`<h3>${id?'Edit course':'Add course'}</h3><form onsubmit="return saveCourse(event,'${id||''}')"><div class="grid2">
+<div class="w"><label>Course name *</label><input required name="name" value="${esc(c.name)}"></div>
+<div><label>Duration</label><input name="duration" value="${esc(c.duration)}" placeholder="e.g. 3 Months"></div>
+<div><label>Fee (Rs.)</label><input type="number" min="0" name="fee" value="${c.fee||''}" placeholder="0"></div>
+<div class="w"><label>Lecture days</label>${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<label class="dc"><input type="checkbox" name="days" value="${d}" ${(c.days||'').split(',').includes(d)?'checked':''}>${d}</label>`).join('')}</div>
+<div><label>Lecture start time</label><input type="time" name="start" value="${c.start||''}"></div>
+<div><label>Lecture end time</label><input type="time" name="end" value="${c.end||''}"></div></div>
+<div class="acts"><button type="button" class="btn" onclick="closeM()">Cancel</button><button class="btn p">Save course</button></div></form>`)}
+function saveCourse(e,id){e.preventDefault();const f=new FormData(e.target),d={name:f.get('name').trim(),duration:f.get('duration'),fee:Number(f.get('fee')||0),days:f.getAll('days').join(','),start:f.get('start'),end:f.get('end')};
+if(id)Object.assign(DB.courses.find(c=>c.id===id),d);else DB.courses.push({id:uid('c'),...d});
+save();closeM();render();toast('Course saved');return false}
+function delCourse(id){if(DB.students.some(s=>s.courseId===id)){toast('Students are enrolled in this course');return}
+confirmM('Delete this course?',()=>{DB.courses=DB.courses.filter(c=>c.id!==id);save();closeM();render()})}
+
+/* ---------- RENDER ---------- */
+function render(){
+const bh='<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAASFBMVEX////+//////z//v/+/v/+/v7+/v39/v78/P34/Pzm7vS1yeAym+gAlv0ViO8Ahvwhb9UAcPsFVOwtMDslJiscHiMVFx4MDxZgtWiIAAAEEUlEQVR42u2Z63qjIBCGWRtlAE1UPNz/ne6AB0AFQePT/bFf0zZNzfcyw0GGkDyHG8pPRfBxQxEAyLmQ9UYyUiKHcwARfedR72hwNaIGTvYE2AG605Z6+UeAPB5w7Nr1JrYAAE4AnV+9yd31CEL2Vt/cTJE87f00wG7c7EfPOGmY/+MDFMURoJPxugYQ0RNYjGEAIg4BwKIWIAYeAHgA/RpBxOKFYhER5GFAeJn8AiAs0AA1qAJ9UNxOUSyAXQQMYYBJ0S3A8EwfxAHmJF3u5GjA7RRBXIq6ZwFqCb7cB9QrK4I7AL38Zdn0vfzUAmpH0EUBKAXqAArmV/azdPIB4CC3FFfSH2yiA+BlQIzGR4DuKn7GOVPDdFgA4hMQZtAbwdb+RQgToiyrSmQ2gPvMK/xyAb0PQHK0z7S5UiRgiQDOARSvErP7EwBQra+qq4DTFAEOlKoKACpXmPoEAA57Ilz/LaBRTk2jf32a9Vk4RWoSkOlJJjYttABq+45Da6tyG8HQeSJ40b3/u3YBcLBrigbkW/93XQphJpoGHOyaogHoZPceujPVQuYADm5HkYAf178WXC2QDHA1lTOgvwWAgr+Nf4k7VwA6WSyAjt0CZGZ8vku23rvwPQtALu+ACwA7QR+RvcBscZdpYAAXIqCUrQF8SvvWC6ReAIKwywA7gJJNyZ8nIe9GVesMnjI5FmB64O34TINU1VGHGfICehcAGTcd4EbGhwUgEgD9JgIrQ29eWK+DHkK6FJQsjwDAcYqoyVCZ2f5qDkyV5uhb3ncRjHsAJWYMiT/M2Fv+kkESoLcBmGmri+nqz/UUCwXgA6iSywEIk6HX5I7NF5Z/PV0NUYCprvYA8FVc4oi2n/NjJahIAVh1sgMo0J1re+PP57YnAAZubkpsBehlQtSyG9fm4+/OX3kEAOauysECqDvkaFqvnsidP8SkyJypSLXntAHmoEWFIUO1XwCwMlQGtgDT/FHdevIkwHwuYAD7CIy9FOGyyQcY7Bx1RwAdhRS574AlDBhswFGKdAwStxUFnBa5nhQNvb+TtbsUBTmvsvaAetwd6roR5FydIqs9kd5TJkagTrz67SGyZBZAX6SLxqgidAvAXS7fSe0OLQBeBSzOXgMaF3CwfSU2IIt09gIOP6FwIrgKaGaAJ5E3AViJPAjQlc6DgEUGAE8DfBF8HgVMQ+E+gDwNOJnv/wHngMBaBL8UQTv7t/8EoFkAxbcBjQ0A55OlOECbAkhNUTspDjCPFUpNCb0cHevjY/p6LX+pB7xSAVmqRNsmAD7vMlV1GuDTxKg9VBSgiVYyoEnRhQhu238R0D4HaIP6zQhyUbe3VbPcBygKrLxvixNaEP+a9QVRa89SLMuxOSNO03q9eqd+AEXPvybRYpqNEmDdAAAAAElFTkSuQmCC" alt="Logo">'+'<span>'+esc(DB.inst||'Techrution Institute')+'</span>';$('brand').innerHTML=bh;$('mbrand').innerHTML=bh;$('side').classList.remove('open');
+$('nav').innerHTML=NAVS.map(n=>`<button class="${V.view===n[0]?'on':''}" onclick="go('${n[0]}')">${n[1]}</button>`).join('')+'<button onclick="logout()" style="margin-top:14px">Lock</button>';
+if(!ready){$('main').innerHTML='<div class="empty">Loading data…</div>';return}
+$('main').innerHTML={home,students,fees,courses}[V.view]();
+if(V.view==='students')stList();if(V.view==='fees')feeList();
+}
+function showLock(cb){const l=document.createElement('div');l.className='lock';l.innerHTML='<form><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAASFBMVEX////+//////z//v/+/v/+/v7+/v39/v78/P34/Pzm7vS1yeAym+gAlv0ViO8Ahvwhb9UAcPsFVOwtMDslJiscHiMVFx4MDxZgtWiIAAAEEUlEQVR42u2Z63qjIBCGWRtlAE1UPNz/ne6AB0AFQePT/bFf0zZNzfcyw0GGkDyHG8pPRfBxQxEAyLmQ9UYyUiKHcwARfedR72hwNaIGTvYE2AG605Z6+UeAPB5w7Nr1JrYAAE4AnV+9yd31CEL2Vt/cTJE87f00wG7c7EfPOGmY/+MDFMURoJPxugYQ0RNYjGEAIg4BwKIWIAYeAHgA/RpBxOKFYhER5GFAeJn8AiAs0AA1qAJ9UNxOUSyAXQQMYYBJ0S3A8EwfxAHmJF3u5GjA7RRBXIq6ZwFqCb7cB9QrK4I7AL38Zdn0vfzUAmpH0EUBKAXqAArmV/azdPIB4CC3FFfSH2yiA+BlQIzGR4DuKn7GOVPDdFgA4hMQZtAbwdb+RQgToiyrSmQ2gPvMK/xyAb0PQHK0z7S5UiRgiQDOARSvErP7EwBQra+qq4DTFAEOlKoKACpXmPoEAA57Ilz/LaBRTk2jf32a9Vk4RWoSkOlJJjYttABq+45Da6tyG8HQeSJ40b3/u3YBcLBrigbkW/93XQphJpoGHOyaogHoZPceujPVQuYADm5HkYAf178WXC2QDHA1lTOgvwWAgr+Nf4k7VwA6WSyAjt0CZGZ8vku23rvwPQtALu+ACwA7QR+RvcBscZdpYAAXIqCUrQF8SvvWC6ReAIKwywA7gJJNyZ8nIe9GVesMnjI5FmB64O34TINU1VGHGfICehcAGTcd4EbGhwUgEgD9JgIrQ29eWK+DHkK6FJQsjwDAcYqoyVCZ2f5qDkyV5uhb3ncRjHsAJWYMiT/M2Fv+kkESoLcBmGmri+nqz/UUCwXgA6iSywEIk6HX5I7NF5Z/PV0NUYCprvYA8FVc4oi2n/NjJahIAVh1sgMo0J1re+PP57YnAAZubkpsBehlQtSyG9fm4+/OX3kEAOauysECqDvkaFqvnsidP8SkyJypSLXntAHmoEWFIUO1XwCwMlQGtgDT/FHdevIkwHwuYAD7CIy9FOGyyQcY7Bx1RwAdhRS574AlDBhswFGKdAwStxUFnBa5nhQNvb+TtbsUBTmvsvaAetwd6roR5FydIqs9kd5TJkagTrz67SGyZBZAX6SLxqgidAvAXS7fSe0OLQBeBSzOXgMaF3CwfSU2IIt09gIOP6FwIrgKaGaAJ5E3AViJPAjQlc6DgEUGAE8DfBF8HgVMQ+E+gDwNOJnv/wHngMBaBL8UQTv7t/8EoFkAxbcBjQ0A55OlOECbAkhNUTspDjCPFUpNCb0cHevjY/p6LX+pB7xSAVmqRNsmAD7vMlV1GuDTxKg9VBSgiVYyoEnRhQhu238R0D4HaIP6zQhyUbe3VbPcBygKrLxvixNaEP+a9QVRa89SLMuxOSNO03q9eqd+AEXPvybRYpqNEmDdAAAAAElFTkSuQmCC" alt="Logo"><h2>Techrution Institute</h2><div class="mute">Enter password to continue</div><input type="password" inputmode="numeric" id="pw" placeholder="Password" autocomplete="off"><p id="pe"></p><button class="btn p" style="width:100%">Unlock</button></form>';document.body.appendChild(l);$('pw').focus();
+l.querySelector('form').onsubmit=async e=>{e.preventDefault();$('pe').textContent='Checking…';const pw=pwOf($('pw').value);let {error}=await sb.auth.signInWithPassword({email:ADMIN_EMAIL,password:pw});
+if(error&&/invalid login/i.test(error.message)){const r=await sb.auth.signUp({email:ADMIN_EMAIL,password:pw});
+error=r.error?r.error:(r.data.session?null:{message:'Turn OFF Confirm email in Supabase, delete the user, and try again.'})}
+if(error){$('pe').textContent=error.message;$('pw').value=''}else{l.remove();cb()}}}
+async function logout(){await sb.auth.signOut();location.reload()}
+function changed(){if(!ready)return;const a=document.activeElement;if(!$('modal').innerHTML&&!(a&&a.tagName==='INPUT'))render()}
+async function loadAll(){await q;
+const [c,st,p]=await Promise.all([sb.from('courses').select('*').order('seq'),sb.from('students').select('*').order('seq'),sb.from('payments').select('*').order('seq')]);
+if(c.error||st.error||p.error){toast('Could not load data. Check setup.','error');return}
+if(!c.data.length&&!seeded){seeded=true;const r=await sb.from('courses').insert(mk().map(cRow));if(!r.error)return loadAll()}
+DB.courses=c.data.map(cFrom);
+DB.students=st.data.map(r=>({id:r.id,name:r.name,father:r.father,phone:r.phone,mode:r.mode,courseId:r.course_id,total:Number(r.total),notes:r.notes||'',joined:r.joined,payments:p.data.filter(x=>x.student_id===r.id).map(x=>({id:x.id,amount:Number(x.amount),date:x.date,kind:x.kind,note:x.note||x.kind}))}));
+synced={};DB.students.forEach(s=>synced[s.id]=JSON.stringify(s));csync={};DB.courses.forEach(c=>csync[c.id]=JSON.stringify(c));
+const first=!ready;ready=true;first?render():changed()}
+async function START(){render();await loadAll();let tm;
+sb.channel('tit').on('postgres_changes',{event:'*',schema:'public'},()=>{clearTimeout(tm);tm=setTimeout(loadAll,700)}).subscribe()}
+(async()=>{if(SUPABASE_URL.startsWith('PASTE')){document.body.innerHTML='<div style="padding:30px;font:16px sans-serif;max-width:560px">Open index.html and paste your Supabase Project URL and anon key at the top of the script (SUPABASE SETTINGS).</div>';return}
+sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const {data}=await sb.auth.getSession();data.session?START():showLock(START)})();
+</script>
+</body>
+</html>
